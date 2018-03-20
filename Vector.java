@@ -27,11 +27,11 @@ public class Vector {
     
     public double gety(){
         return y;
-    }
+    } 
     public void addPolar(double size, double angle){
-        y += Math.sin(angle)*size;
-        x += Math.cos(angle)*size;
-    }
+        y += Math.sin(Math.toRadians(angle))*size;
+        x += Math.cos(Math.toRadians(angle))*size;
+        }
     
     public void addCartesian(double ax, double ay){
         x += ax;
@@ -46,7 +46,7 @@ public class Vector {
     public double getAngle(){
         return Math.atan2(y, x);
     }
-    
+     
     public double getSize(){
         return Math.sqrt(x*x+y*y);
     }

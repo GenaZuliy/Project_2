@@ -13,9 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.util.Duration;
+
 
 
 /**
@@ -24,47 +22,25 @@ import javafx.util.Duration;
  */
 public class Project2 extends Application {
     
-    private Checkpoint check = new Checkpoint();
-    private Car car = new Car();
-    private Timeline timer = new Timeline();
-    
+private Track track = new Track();
+	
     @Override
     public void start(Stage primaryStage) {
-        updateElements();
-        Button btn = new Button();
-        btn.setText("button");
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-            
-            @Override
-            public void handle(ActionEvent event) {
-               
-                car.drive();
-                
-                System.out.println(car.getxPos());
-                System.out.println(car.getyPos());
-            }
-        });
+
         
          
-        timer.setCycleCount(Timeline.INDEFINITE);
-		timer.getKeyFrames().add(new KeyFrame(Duration.seconds(1/30.0), e -> {
-			
-			car.drive();
-			updateElements();
-		}));
-		timer.setAutoReverse(false);
-		timer.play();
+ 
 
         
         
         Pane root = new Pane();
-        root.getChildren().add(btn);
-        //root.getChildren().add(check);
-        root.getChildren().add(car);
+    
+        root.getChildren().add(track);
+        
         Scene scene = new Scene(root, 700, 600);
         
         
-        primaryStage.setTitle("Hello World!");
+        primaryStage.setTitle("Race Game");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -82,9 +58,5 @@ public class Project2 extends Application {
     	
     }
     
-    private void updateElements()
-    {
-        car.setTranslateX(car.getxPos());
-        car.setTranslateY(car.getyPos());
-    }
+
 }

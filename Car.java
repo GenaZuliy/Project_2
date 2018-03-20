@@ -30,6 +30,7 @@ public class Car extends Canvas {
     private double engineForce;
     private LinkedList<Checkpoint> checkpoints;
     private GraphicsContext gc = this.getGraphicsContext2D();
+    private double driveAngle;
     
     public Car()
     {   
@@ -37,13 +38,14 @@ public class Car extends Canvas {
         this.setManaged(false);
         gc.setFill(Color.BISQUE);
         gc.fillRect(0, 0, 80, 20);
-        this.engine =  520;
-        this.engineForce = 500;
+        this.engine =  5000;
+        this.engineForce = 4999;
         this.frictionConstant = 0.0;
         this.mass = 100;
         this.velocity = new Vector();
         this.xPos = 20;
         this.yPos = 20;
+        this.driveAngle = 0;
     }
     
     public double getSpeed(){
@@ -54,19 +56,22 @@ public class Car extends Canvas {
         move();
     }
     
-    private void turn() {
+    public double turn(double angle) {
         
+    	this.driveAngle = angle;
+    	this.velocity = new Vector();
+    	return angle;
     }
     
     private void move(){
-    	//changed angle to 0, car should accelerate at 0 degrees until checkpoint, then reset. 
-        acceleration.addPolar((engineForce/mass)-(frictionConstant*mass*9.8), 0);
+
+        acceleration.addPolar((engineForce/mass)-(frictionConstant*mass*9.8), driveAngle);
         //acceleration.addPolar(1, 0);
-        System.out.println(acceleration.getx());
+        //System.out.println(acceleration.getx());
         acceleration.multiplyScaler(1/30.0);
         velocity.addCartesian(acceleration);
         xPos += velocity.getx()/30.0;
-        yPos += velocity.gety()/30.0;
+        yPos += velocity.gety()/30.0; 
     }
     
     public double getxPos() {
