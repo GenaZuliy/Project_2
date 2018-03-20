@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author peter
@@ -29,7 +28,7 @@ public class Vector {
     public double gety(){
         return y;
     }
-    public void addPolar(double angle, double size){
+    public void addPolar(double size, double angle){
         y += Math.sin(angle)*size;
         x += Math.cos(angle)*size;
     }
