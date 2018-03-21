@@ -26,12 +26,6 @@ private Track track = new Track();
 	
     @Override
     public void start(Stage primaryStage) {
-
-        
-         
- 
-
-        
         
         Pane root = new Pane();
     

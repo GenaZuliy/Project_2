@@ -24,7 +24,7 @@ public class Track extends Pane{
     //cars.setNumberOfCars(1);
     //checkpoints.setAmount(2);
 	  
-	  this("Unnamed", 1, 2);
+	  this("Unnamed", 2, 4);
   }
   
   
@@ -43,7 +43,7 @@ public class Track extends Pane{
 		timer.getKeyFrames().add(new KeyFrame(Duration.seconds(1/30.0), e -> {
 			
 			this.moveCars();
-			updateElements();
+
 		}));
 		timer.setAutoReverse(false);
 		timer.play();
@@ -59,16 +59,17 @@ public class Track extends Pane{
             	{
             		
             		c.setRotate(c.turn(r.nextInt(360)));
+            		c.drive(400);
            
             	}
 
             }
         });
         this.getChildren().add(btn);
-        initCars();
         
-        //not loading checkpts while testing car
-        //initCheckpts();
+        initCheckpts();
+        initCars();
+
   }
  
 
@@ -101,8 +102,14 @@ public class Track extends Pane{
   {
 	  for(int i = 0; i < numCars; i++)
 	  {
-		  Car c = new Car();
+		  
+		  Car c = new Car(checkpoints[0].getTranslateX(),checkpoints[0].getTranslateY(),0);
+		  double angle = angleBetweenCheckpt(checkpoints[c.getLastCheckpt()],checkpoints[getNextCheckpt(c)]);
+		  c.setRotate(angle);
+		  c.turn(angle);
+		  
 		  cars[i] = c;
+		  
 		  this.getChildren().add(c);
 	  }
   }
@@ -121,7 +128,10 @@ public class Track extends Pane{
   {
 	  for(int i = 0; i < numCheckpt; i++)
 	  {	
+		  Random rand = new Random();
 		  Checkpoint c = new Checkpoint();
+		  c.setTranslateX((rand.nextInt(100) * 6));
+		  c.setTranslateY(i * 100 + rand.nextInt(100) );
 		  checkpoints[i] = c;
 		  this.getChildren().add(c);
 	  }
@@ -131,39 +141,40 @@ public class Track extends Pane{
   {
 	  for(Car c : cars)
 	  {
-		  c.drive();
+
+		  c.drive(distBetweenCheckpt(checkpoints[c.getLastCheckpt()],checkpoints[getNextCheckpt(c)]));
+
+		  Checkpoint dest = checkpoints[getNextCheckpt(c)];
+		  
 	  }
   }
   
-  private void updateElements()
+  public double distBetweenCheckpt(Checkpoint a, Checkpoint b)
   {
-	  if(cars != null)
-	  {
-		  for(Car c : cars)
-		  {
-			  if(c != null)
-			  {
-				  c.setTranslateX(c.getxPos());
-				  c.setTranslateY(c.getyPos());
-		  
-			  }
-		  }
-	  }
+	  double xa = a.getTranslateX();
+	  double ya = a.getTranslateY();
+	  double xb = b.getTranslateX();
+	  double yb = b.getTranslateY();
 	  
-	  if(checkpoints != null) 
-	  {
-		  for(Checkpoint c : checkpoints)
-		  {
-			  if(c != null)
-			  {
-				  c.setTranslateX(c.getX());
-				  c.setTranslateY(c.getY());
-			  }
-		  }
-	  }
-      
+	  return Math.sqrt(Math.pow(xb-xa,2) + Math.pow(yb-ya,2));
   }
-   
+  
+  public double angleBetweenCheckpt(Checkpoint a, Checkpoint b)
+  {
+	  double xa = a.getTranslateX();
+	  double ya = a.getTranslateY();
+	  double xb = b.getTranslateX();
+	  double yb = b.getTranslateY();
+	  
+	  return Math.toDegrees(Math.atan2(yb-ya, xb-xa));
+  }
+  
+  private int getNextCheckpt(Car c)
+  {
+	  return (c.getLastCheckpt() + 1) % numCheckpt;
+  }
+  
+ 
    public void startRace()
    {
       //start timer

@@ -14,6 +14,7 @@ import javafx.scene.shape.Circle;
 public class Checkpoint extends Circle {
     private double x;
 	private double y;
+	private int id;
 	
 	
     public final double radius = 1.0;
@@ -21,7 +22,6 @@ public class Checkpoint extends Circle {
     public Checkpoint()
     {	
     	this(50,50,30);
-    	
     }    
     
     
@@ -46,6 +46,7 @@ public class Checkpoint extends Circle {
    	 */
    	public void setX(double x) {
    		this.x = x;
+   		this.setTranslateX(x);
    	}
 
 
@@ -54,5 +55,11 @@ public class Checkpoint extends Circle {
    	 */
    	public void setY(double y) {
    		this.y = y;
+   		this.setTranslateY(y);
+   	}
+   	
+   	public int getID()
+   	{
+   		return id;
    	}
 }

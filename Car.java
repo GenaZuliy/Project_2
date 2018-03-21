@@ -26,52 +26,113 @@ public class Car extends Canvas {
     private Vector acceleration = new Vector();
     
     private double yPos;
+    private double yTraveled;
+    private double xTraveled;
+    
     private double tireAngle;
     private double engineForce;
     private LinkedList<Checkpoint> checkpoints;
     private GraphicsContext gc = this.getGraphicsContext2D();
     private double driveAngle;
     
+    private double displacement = 0;
+    public boolean arrived = false;
+    
+    private int lastCheckpt = 0;
+    
     public Car()
     {   
-        super(80,20);
+        super(50,20);
         this.setManaged(false);
-        gc.setFill(Color.BISQUE);
+        gc.setFill(Color.RED);
         gc.fillRect(0, 0, 80, 20);
         this.engine =  5000;
-        this.engineForce = 4999;
+        this.engineForce = Math.random() * 5000;
         this.frictionConstant = 0.0;
         this.mass = 100;
         this.velocity = new Vector();
-        this.xPos = 20;
-        this.yPos = 20;
+        this.xPos = 0;
+        this.yPos = 50;
         this.driveAngle = 0;
+        
+        
+    }
+    
+    public Car(double x, double y, int startCheckpt)
+    {   
+        super(50,20);
+        this.setManaged(false);
+        gc.setFill(Color.RED);
+        gc.fillRect(0, 0, 80, 20);
+        this.engine =  5000;
+        this.engineForce = Math.random() * 5000;
+        this.frictionConstant = 0.0;
+        this.mass = 100;
+        this.velocity = new Vector();
+        this.xPos = x;
+        this.yPos = y;
+        this.driveAngle = 0;
+        this.lastCheckpt = startCheckpt;
+        
     }
     
     public double getSpeed(){
         return velocity.getSize();
     }
     
-    public void drive(){
-        move();
+    public void drive(double distance){
+    	if(displacement < distance)
+    	{	
+    		move();
+    	}
+
     }
     
     public double turn(double angle) {
-        
+    	
+    	
     	this.driveAngle = angle;
-    	this.velocity = new Vector();
+    	this.xTraveled = 0;
+    	this.yTraveled = 0;
+    	this.velocity = new Vector(0,0);
+    	//displacement = 0.0;
     	return angle;
     }
     
     private void move(){
-
-        acceleration.addPolar((engineForce/mass)-(frictionConstant*mass*9.8), driveAngle);
-        //acceleration.addPolar(1, 0);
-        //System.out.println(acceleration.getx());
+    	arrived = false;
+    	calcAcc();
         acceleration.multiplyScaler(1/30.0);
         velocity.addCartesian(acceleration);
-        xPos += velocity.getx()/30.0;
+        calcVelocity();
+        calcPosition();
+        xTraveled += velocity.getx()/30.0;
+        yTraveled += velocity.gety()/30.0; 
+        calcDisplacement();
+        this.setTranslateX(getxPos());
+		this.setTranslateY(getyPos());
+        System.out.println(displacement);
+        
+    }
+    public void calcAcc()
+    {
+        acceleration.addPolar((engineForce/mass)-(frictionConstant*mass*9.8), driveAngle);
+    }
+    
+    public void calcVelocity()
+    {
+        velocity.addCartesian(acceleration);
+    }
+    
+    public void calcPosition()
+    {
+    	xPos += velocity.getx()/30.0;
         yPos += velocity.gety()/30.0; 
+    }
+    
+    public void calcDisplacement()
+    {
+        displacement = Math.sqrt(Math.pow(xTraveled,2) + Math.pow(yTraveled,2));
     }
     
     public double getxPos() {
@@ -86,5 +147,10 @@ public class Car extends Canvas {
     public double getAngle()
     {
     	return velocity.getAngle();
+    }
+    
+    public int getLastCheckpt()
+    {
+    	return lastCheckpt;
     }
 }
