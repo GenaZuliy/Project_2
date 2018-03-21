@@ -74,6 +74,7 @@ public class Car extends Canvas {
         this.driveAngle = 0;
         this.lastCheckpt = startCheckpt;
         
+        
     }
     
     public double getSpeed(){
@@ -81,11 +82,16 @@ public class Car extends Canvas {
     }
     
     public void drive(double distance){
+        //checkpointDistance();
     	if(displacement < distance)
     	{	
-    		move();
+            move();
     	}
 
+    }
+    
+    public void setCheckpoints(LinkedList<Checkpoint> LL){
+        checkpoints = (LinkedList<Checkpoint>)LL.clone();
     }
     
     public double turn(double angle) {
@@ -98,7 +104,14 @@ public class Car extends Canvas {
     	//displacement = 0.0;
     	return angle;
     }
+ 
     
+    private void checkpointDistance(){
+        double dist = Math.sqrt(xPos*xPos + checkpoints.getFirst().getX()*checkpoints.getFirst().getX());
+        if (dist <= checkpoints.getFirst().radius){
+            checkpoints.removeFirst();
+        }
+    } 
     private void move(){
     	arrived = false;
     	calcAcc();
