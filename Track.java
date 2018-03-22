@@ -24,7 +24,7 @@ public class Track extends Pane{
     //cars.setNumberOfCars(1);
     //checkpoints.setAmount(2);
 	  
-	  this("Unnamed", 2, 4);
+	  this("Unnamed", 1, 4);
   }
   
   
@@ -37,10 +37,12 @@ public class Track extends Pane{
     // old : checkpoints.setAmount(numberOfCheckpoints);
     this.numCheckpt = numCheckpt;
     checkpoints = new Checkpoint[numCheckpt];
+    initCheckpts();
+    initCars();
 
     
     timer.setCycleCount(Timeline.INDEFINITE);
-		timer.getKeyFrames().add(new KeyFrame(Duration.seconds(1/30.0), e -> {
+		timer.getKeyFrames().add(new KeyFrame(Duration.seconds(1/60.0), e -> {
 			
 			this.moveCars();
 
@@ -58,8 +60,8 @@ public class Track extends Pane{
             	for(Car c : cars)
             	{
             		
-            		c.setRotate(c.turn(r.nextInt(360)));
-            		c.drive(400);
+            		//c.setRotate(c.turn(r.nextInt(360)));
+            		c.drive();
            
             	}
 
@@ -67,9 +69,7 @@ public class Track extends Pane{
         });
         this.getChildren().add(btn);
         
-        initCheckpts();
-        initCars();
-
+      
   }
  
 
@@ -103,10 +103,10 @@ public class Track extends Pane{
 	  for(int i = 0; i < numCars; i++)
 	  {
 		  
-		  Car c = new Car(checkpoints[0].getTranslateX(),checkpoints[0].getTranslateY(),0);
-		  double angle = angleBetweenCheckpt(checkpoints[c.getLastCheckpt()],checkpoints[getNextCheckpt(c)]);
-		  c.setRotate(angle);
-		  c.turn(angle);
+		  Car c = new Car(50,50,asList(checkpoints));
+		  //double angle = angleBetweenCheckpt(checkpoints[c.getLastCheckpt()],checkpoints[getNextCheckpt(c)]);
+		  //c.setRotate(angle);
+		  c.turn();
 		  
 		  cars[i] = c;
 		  
@@ -129,9 +129,9 @@ public class Track extends Pane{
 	  for(int i = 0; i < numCheckpt; i++)
 	  {	
 		  Random rand = new Random();
-		  Checkpoint c = new Checkpoint();
-		  c.setTranslateX((rand.nextInt(100) * 6));
-		  c.setTranslateY(i * 100 + rand.nextInt(100) );
+		  Checkpoint c = new Checkpoint(rand.nextDouble() * 600,i * 100 + rand.nextDouble() * 100, 30);
+		  c.setTranslateX(c.getX());
+		  c.setTranslateY(c.getY());
 		  checkpoints[i] = c;
 		  this.getChildren().add(c);
 	  }
@@ -141,10 +141,8 @@ public class Track extends Pane{
   {
 	  for(Car c : cars)
 	  {
-
-		  c.drive(distBetweenCheckpt(checkpoints[c.getLastCheckpt()],checkpoints[getNextCheckpt(c)]));
-
-		  Checkpoint dest = checkpoints[getNextCheckpt(c)];
+		  c.drive();
+		  //c.drive(distBetweenCheckpt(checkpoints[c.getLastCheckpt()],checkpoints[getNextCheckpt(c)]));
 		  
 	  }
   }
@@ -169,15 +167,22 @@ public class Track extends Pane{
 	  return Math.toDegrees(Math.atan2(yb-ya, xb-xa));
   }
   
-  private int getNextCheckpt(Car c)
-  {
-	  return (c.getLastCheckpt() + 1) % numCheckpt;
-  }
   
  
    public void startRace()
    {
       //start timer
+   }
+   
+   public LinkedList<Checkpoint> asList(Checkpoint[] array)
+   {
+	   
+	   LinkedList<Checkpoint> LL = new LinkedList<>();
+	   for(Checkpoint c : checkpoints)
+	   {
+		   LL.add(c);
+	   }
+	   return LL;
    }
   
 }

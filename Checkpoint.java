@@ -25,7 +25,7 @@ public class Checkpoint extends Circle {
     }    
     
     
-    public Checkpoint(int xPos,int yPos,int radius)
+    public Checkpoint(double xPos,double yPos,int radius)
     {	
         this.setRadius(radius);
         this.setX(xPos);

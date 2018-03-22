@@ -44,7 +44,7 @@ public class Vector {
     }
     
     public double getAngle(){
-        return Math.atan2(y, x);
+        return Math.toDegrees(Math.atan2(y, x));
     }
      
     public double getSize(){
@@ -52,7 +52,7 @@ public class Vector {
     }
     
     public void multiplyScaler(double scaler){
-        x*=scaler;
-        y*=scaler;
+        x *= scaler;
+        y *= scaler;
     }
 }
