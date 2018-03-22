@@ -36,8 +36,11 @@ public class Car extends Canvas {
     private LinkedList<Checkpoint> checkpoints;
     private GraphicsContext gc = this.getGraphicsContext2D();
     private double driveAngle;
-    
-    
+
+    /**
+     * Initialize the car object with the given specifications
+     */
+
     public Car()
     {   
         super(50,20);
@@ -54,7 +57,14 @@ public class Car extends Canvas {
         
         
     }
-    
+
+    /**
+     * Initialize the car object at given x/y coordinate with the given specifications as well as creating a checkpoint at the same spot
+     * @param x the x coordinate
+     * @param y the y coordinate
+     * @param LL the checkpoint
+     */
+
     public Car(double x, double y, LinkedList<Checkpoint> LL)
     {   
         super(50,20);
@@ -74,6 +84,7 @@ public class Car extends Canvas {
 
         
     }
+<<<<<<< HEAD
     
     public void checkCollision()
     {
@@ -88,10 +99,20 @@ public class Car extends Canvas {
     	}
     }
     
+=======
+
+    /**
+     *Returns the size of the velocity vector
+     *@return velocity.getSize()
+     */
+>>>>>>> 087ba42a556c24c2c5418ca738f4950150c3ea5d
     public double getSpeed(){
         return velocity.getSize();
     }
-    
+
+    /**
+     * Calls the turn and move methods to turn and move the car in a certain direction
+     */
     public void drive(){
     	if(!checkpoints.isEmpty())
     	{
@@ -102,6 +123,11 @@ public class Car extends Canvas {
     	}
         
     }
+
+    /**
+     * Calculates the distance between two given checkpoints
+     * @return dist The distance between the two given checkpoints
+     */
     private double checkpointDistance() {
     	double xa = 0, ya = 0, xb = 0, yb = 0;
     	
@@ -115,10 +141,18 @@ public class Car extends Canvas {
   	  
   	  return Math.sqrt(Math.pow(xb-xa,2) + Math.pow(yb-ya,2));
     }
-    
+
+    /**
+     * Creates and returns a copy of Checkpoint
+     * @param LL
+     */
     public void setCheckpoints (LinkedList<Checkpoint> LL){
         this.checkpoints = (LinkedList<Checkpoint>)LL.clone();
     }
+
+    /**
+     * Rotates the car by a certain degree to face the next checkpoint
+     */
     public void turn(){
     	
     	if(!checkpoints.isEmpty())
@@ -129,6 +163,12 @@ public class Car extends Canvas {
     	}
     	
     }
+
+    /**
+     * Finds the angle in which to rotate at to get to the next checkpoint
+     * @param b the checkpoint to rotate to
+     * @return ans the angle to rotate
+     */
     public double angleToCheckpt(Checkpoint b)
   {
   	  double xa = position.getx();
@@ -136,11 +176,14 @@ public class Car extends Canvas {
   	  double xb = b.getTranslateX();
   	  double yb = b.getTranslateY();
   	  
-	  double ans =   Math.toDegrees(Math.atan2(yb-ya, xb-xa));
+	  double ans =  Math.toDegrees(Math.atan2(yb-ya, xb-xa));
 	  
 	  return ans; 
   }
-    
+
+    /**
+     * Finds the distance to next checkpoint and accelerates accordingly to the checkpoint
+     */
     private void move(){
     	checkpointDistance();
     	calcAcc();
@@ -154,38 +197,54 @@ public class Car extends Canvas {
     	acceleration.addPolar(((engineForce-(frictionConstant*mass*9.8))/mass), driveAngle);    	
     	acceleration.multiplyScaler(1/100.0);
     }
-    
+
+    /**
+     * Calculates the velocity of the car using the velocity vector's size and angle
+     */
     public void calcVelocity()
     {
 
     	velocity.addCartesian(acceleration);
         //System.out.println(velocity);
     }
-    
+
     public void calcPosition()
     {
     	position.addCartesian(velocity);
     	this.setTranslateX(position.getx() - 25);
         this.setTranslateY(position.gety() - 10);
     }
-    
-    
+
+    /**
+     * Returns cars x position
+     * @return xPos
+     */
     public double getxPos() {
         return xPos;
     }
 
+    /**
+     * Returns cars y position
+     * @return yPos
+     */
     public double getyPos() {
         return yPos;
     }
-    
-    //returns angle of car's velocity
+
+    /**
+     * Returns angle of car's velocity
+     * @return velocity.getAngle()
+     */
     public double getAngle()
     {
     	return velocity.getAngle();
     }
     
    
-    
+   @Override
+   /**
+    * Returns the x/y positions of the car as well as angle it is facing and its acceleration
+    */
     public String toString()
     {
     	return "x : " + position.getx() + " y : " + position.gety() +  " v Angle : " + driveAngle +  "  " +  "  DIST:  " + checkpointDistance();
