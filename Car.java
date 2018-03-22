@@ -84,7 +84,6 @@ public class Car extends Canvas {
 
         
     }
-<<<<<<< HEAD
     
     public void checkCollision()
     {
@@ -99,13 +98,13 @@ public class Car extends Canvas {
     	}
     }
     
-=======
+
 
     /**
      *Returns the size of the velocity vector
      *@return velocity.getSize()
      */
->>>>>>> 087ba42a556c24c2c5418ca738f4950150c3ea5d
+
     public double getSpeed(){
         return velocity.getSize();
     }
