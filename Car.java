@@ -6,6 +6,8 @@
  */
 
 import java.util.LinkedList;
+import java.util.Random;
+
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
@@ -64,6 +66,7 @@ public class Car extends Canvas {
 		gc.fillRect(0, 0, 50, 20);
 
 		this.checkpoints = (LinkedList<Checkpoint>) LL.clone();
+		this.randomizeStart();
 		this.engineForce = Math.random() * 3000 + 2000;
 		this.frictionConstant = .0001;
 		this.mass = 1000;
@@ -226,6 +229,16 @@ public class Car extends Canvas {
 	 */
 	public double getAngle() {
 		return velocity.getAngle();
+	}
+	
+	public void randomizeStart()
+	{
+		Random rand = new Random();
+		for(int i = 0; i < rand.nextInt(4); i++)
+		{
+			Checkpoint c = checkpoints.removeFirst();
+			checkpoints.addLast(c);
+		}
 	}
 
 	@Override

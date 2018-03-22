@@ -27,7 +27,7 @@ public class Track extends Pane{
     //cars.setNumberOfCars(1);
     //checkpoints.setAmount(2);
 	  
-	  this("Unnamed", 1, 4);
+	  this("Unnamed", 4, 4);
   }
 
 
@@ -38,6 +38,8 @@ public class Track extends Pane{
      * @param numCheckpt
      */
   public Track(String trackName, int numCars, int numCheckpt){
+	this.setMaxSize(600, 600);
+	this.setPrefSize(600,600);
     this.name = trackName;
     // old : cars.setNumberOfCars(numberOfCars);
     this.numCars = numCars;
@@ -58,24 +60,7 @@ public class Track extends Pane{
 		timer.setAutoReverse(false);
 		timer.play();
 		
-		Button btn = new Button();
-        btn.setText("Click to change direction");
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-            
-            @Override
-            public void handle(ActionEvent event) {
-            	Random r = new Random();
-            	for(Car c : cars)
-            	{
-            		
-            		//c.setRotate(c.turn(r.nextInt(360)));
-            		c.drive();
-           
-            	}
-
-            }
-        });
-        this.getChildren().add(btn);
+		
         
       
   }
@@ -145,8 +130,16 @@ public class Track extends Pane{
   {
 	  for(int i = 0; i < numCheckpt; i++)
 	  {	
+		  Checkpoint c = new Checkpoint(0,0,25);
 		  Random rand = new Random();
-		  Checkpoint c = new Checkpoint(rand.nextDouble() * 600,i * 100 + rand.nextDouble() * 100, 30);
+		  if(i == 0)
+			  c = new Checkpoint(rand.nextDouble() * 300,i * 100 + rand.nextDouble() * 100, 30);
+		  else if(i == 1)
+			  c = new Checkpoint(rand.nextDouble() * 300 + 300,i * 100 + rand.nextDouble() * 100, 30);
+		  else if(i == 2)
+			  c = new Checkpoint(rand.nextDouble() * 300 + 300 ,i * 100 + rand.nextDouble() * 100 + 100, 30);
+		  else
+			  c = new Checkpoint(rand.nextDouble() * 300 ,i * 100 + rand.nextDouble() * 100 + 70, 30);
 		  c.setTranslateX(c.getX());
 		  c.setTranslateY(c.getY());
 		  checkpoints[i] = c;
@@ -168,38 +161,6 @@ public class Track extends Pane{
 	  }
   }
 
-    /**
-     * Finds the distance between two checkpoints
-     * @param a checkpoint 1
-     * @param b checkpoint 2
-     * @return distance between the two checkpoints
-     */
-  public double distBetweenCheckpt(Checkpoint a, Checkpoint b)
-  {
-	  double xa = a.getTranslateX();
-	  double ya = a.getTranslateY();
-	  double xb = b.getTranslateX();
-	  double yb = b.getTranslateY();
-	  
-	  return Math.sqrt(Math.pow(xb-xa,2) + Math.pow(yb-ya,2));
-  }
-
-    /**
-     * Finds the angle between two checkpoints
-     *@param a checkpoint 1
-     * @param b checkpoint 2
-     * @return angle between the two checkpoints
-     */
-  public double angleBetweenCheckpt(Checkpoint a, Checkpoint b)
-  {
-	  double xa = a.getTranslateX();
-	  double ya = a.getTranslateY();
-	  double xb = b.getTranslateX();
-	  double yb = b.getTranslateY();
-	  
-	  return Math.toDegrees(Math.atan2(yb-ya, xb-xa));
-  }
-
 
     /**
      * Starts timer
@@ -210,7 +171,7 @@ public class Track extends Pane{
    }
 
     /**
-     * Adds Checkpoint objects to the LinkedList
+     * returns array of checkpoints as linkedlist
      * @param array of Checkpoints
      * @return LL the LinkedList
      */

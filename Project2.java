@@ -4,12 +4,15 @@
  * and open the template in the editor.
  */
 
+import java.util.Random;
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
@@ -23,9 +26,20 @@ public class Project2 extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 
-		Pane root = new Pane();
+		VBox root = new VBox();
+		root.setPadding(new Insets(50.0));
 
-		root.getChildren().add(track);
+		root.getChildren().add(0,track);
+		Button btn = new Button();
+        btn.setText("Click to change direction");
+        btn.setOnAction(new EventHandler<ActionEvent>() {
+            
+            @Override
+            public void handle(ActionEvent event) {
+       
+            }
+        });
+        root.getChildren().add(btn);
 
 		Scene scene = new Scene(root, 700, 600);
 
