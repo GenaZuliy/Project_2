@@ -48,7 +48,7 @@ public class Car extends Canvas {
         this.engineForce = Math.random() * 5000;
         this.frictionConstant = 0.9;
         this.mass = 1000;
-        this.velocity = new Vector();
+        this.velocity = new Vector(); 
         this.driveAngle = 0;
         
         
@@ -63,16 +63,29 @@ public class Car extends Canvas {
         gc.fillRect(0, 0, 50, 20);
         this.checkpoints = (LinkedList<Checkpoint>) LL.clone();
         this.engine =  5000; 
-        this.engineForce = Math.random() * 3000 + 2000;
-        this.frictionConstant = .001 ;
+        this.engineForce = Math.random() * 3000 + 2000; 
+        this.frictionConstant = .0001 ;
         this.mass = 1000;
         this.acceleration = new Vector((engineForce - (frictionConstant * 9.8 * mass))/ mass, driveAngle);
         this.velocity = new Vector();
-        this.position = new Vector(checkpoints.getFirst().getTranslateX(),checkpoints.getFirst().getTranslateY());
+        this.position = new Vector(checkpoints.getLast().getTranslateX(),checkpoints.getLast().getTranslateY());
         this.driveAngle = 0;
     	position.addCartesian(velocity);
 
         
+    }
+    
+    public void checkCollision()
+    {
+    	Checkpoint nextpt = checkpoints.getFirst();
+    	if(nextpt.getBoundsInParent().intersects(this.getBoundsInParent()) && checkpointDistance() < 10)
+    	{
+    		acceleration.multiplyScaler(0);
+    		velocity.multiplyScaler(0);
+    		position.multiplyScaler(0);
+    		position.addCartesian(nextpt.getTranslateX(), nextpt.getTranslateY());
+    		checkpoints.removeFirst();
+    	}
     }
     
     public double getSpeed(){
@@ -80,18 +93,27 @@ public class Car extends Canvas {
     }
     
     public void drive(){
-        checkpointDistance();
-        turn(); 
-        move();
+    	if(!checkpoints.isEmpty())
+    	{
+    		checkCollision();
+    		//checkpointDistance();
+    		turn(); 
+    		move();
+    	}
+        
     }
     private double checkpointDistance() {
-        double dist = Math.sqrt(Math.pow(checkpoints.getFirst().getTranslateX() - position.getx(), 2) + Math.pow(checkpoints.getFirst().getTranslateY() - position.gety(), 2));
-        if(dist < 25)
-        {
-        	acceleration.multiplyScaler(0);
-        	checkpoints.removeFirst();
-        }
-        return dist;
+    	double xa = 0, ya = 0, xb = 0, yb = 0;
+    	
+    	if(!checkpoints.isEmpty())
+    	{
+    		xa = position.getx();
+    		ya = position.gety();
+    		xb = checkpoints.getFirst().getTranslateX();
+    	    yb = checkpoints.getFirst().getTranslateY();
+    	}
+  	  
+  	  return Math.sqrt(Math.pow(xb-xa,2) + Math.pow(yb-ya,2));
     }
     
     public void setCheckpoints (LinkedList<Checkpoint> LL){
@@ -99,17 +121,20 @@ public class Car extends Canvas {
     }
     public void turn(){
     	
-
-    		driveAngle = angleToCheckpt(checkpoints.get(2));
+    	if(!checkpoints.isEmpty())
+    	{
+    		driveAngle = angleToCheckpt(checkpoints.getFirst());
+    		this.setRotate(driveAngle);
     		//acceleration.multiplyScaler(0);
+    	}
     	
     }
     public double angleToCheckpt(Checkpoint b)
   {
-  	  double xb = position.getx();
-  	  double yb = position.gety();
-  	  double xa = b.getTranslateX();
-  	  double ya = b.getTranslateY();
+  	  double xa = position.getx();
+  	  double ya = position.gety();
+  	  double xb = b.getTranslateX();
+  	  double yb = b.getTranslateY();
   	  
 	  double ans =   Math.toDegrees(Math.atan2(yb-ya, xb-xa));
 	  
@@ -118,30 +143,30 @@ public class Car extends Canvas {
     
     private void move(){
     	checkpointDistance();
-    	acceleration.addPolar((engineForce/mass)-(frictionConstant*mass*9.8), driveAngle);    	
-    	acceleration.multiplyScaler(1/100.0);
-        velocity.addCartesian(acceleration);
-    	position.addCartesian(velocity);
-        this.setTranslateX(position.getx());
-        this.setTranslateY(position.gety());
-        System.out.println(this.toString());
+    	calcAcc();
+    	calcVelocity();
+    	calcPosition();
+    
+       // System.out.println(this.toString());
     }
     public void calcAcc()
     {
-       // acceleration = new Vector );
-        //acceleration.addPolar((engineForce/mass)-(frictionConstant*mass*9.8), (tireAngle/2) + velocity.getAngle());
+    	acceleration.addPolar(((engineForce-(frictionConstant*mass*9.8))/mass), driveAngle);    	
+    	acceleration.multiplyScaler(1/100.0);
     }
     
     public void calcVelocity()
     {
-       // velocity.addCartesian(acceleration);
-        velocity = new Vector(velocity.getSize(), driveAngle);
+
+    	velocity.addCartesian(acceleration);
         //System.out.println(velocity);
     }
     
     public void calcPosition()
     {
     	position.addCartesian(velocity);
+    	this.setTranslateX(position.getx() - 25);
+        this.setTranslateY(position.gety() - 10);
     }
     
     
@@ -163,6 +188,6 @@ public class Car extends Canvas {
     
     public String toString()
     {
-    	return "x : " + position.getx() + " y : " + position.gety() +  " v Angle : " + driveAngle +  "  " +  "  AccL: " + acceleration.getSize();
+    	return "x : " + position.getx() + " y : " + position.gety() +  " v Angle : " + driveAngle +  "  " +  "  DIST:  " + checkpointDistance();
     }
 }
