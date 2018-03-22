@@ -14,9 +14,7 @@ public class Checkpoint extends Circle {
 	private double x;
 	private double y;
 	private int id;
-<<<<<<< HEAD
-=======
-	
+
 	
     public final double radius = 1.0;
     
@@ -62,52 +60,8 @@ public class Checkpoint extends Circle {
    		this.x = x;
    		this.setTranslateX(x);
    	}
->>>>>>> 5e98e6686ed0171290253f4f16fd8132531f4157
 
-	public final double radius = 1.0;
 
-	public Checkpoint() {
-		this(50, 50, 30);
-	}
-
-	public Checkpoint(double xPos, double yPos, int radius) {
-		this.setRadius(radius);
-		this.setX(xPos);
-		this.setY(yPos);
-
-	}
-
-	public double getX() {
-		return x;
-	}
-
-	public double getY() {
-		return y;
-	}
-
-	/**
-	 * @param x
-	 *            the x to set
-	 */
-	public void setX(double x) {
-		this.x = x;
-		this.setTranslateX(x);
-	}
-
-	/**
-	 * @param y
-	 *            the y to set
-	 */
-	public void setY(double y) {
-		this.y = y;
-		this.setTranslateY(y);
-	}
-
-<<<<<<< HEAD
-	public int getID() {
-		return id;
-	}
-=======
    	/**
 	 * Set Checkpoint object's y value to value specified
    	 * @param y the y to set
@@ -125,5 +79,5 @@ public class Checkpoint extends Circle {
    	{
    		return id;
    	}
->>>>>>> 5e98e6686ed0171290253f4f16fd8132531f4157
+
 }
