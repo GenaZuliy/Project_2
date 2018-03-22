@@ -17,7 +17,7 @@ import javafx.stage.Stage;
 
 
 /**
- *
+ * Creates the Track object and adds it to the Stage
  * @author g_zuliy
  */
 public class Project2 extends Application {

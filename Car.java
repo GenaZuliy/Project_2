@@ -10,7 +10,9 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 /**
- *
+ * Creates a Car object with a velocity, position, accerlation, engine, tires, identification, friction constant,
+ * mass, x position, y position, x and y travel distances, tire angle, engine force, drive angle. The car can move
+ * forward and turn.
  * @author peter
  */
 public class Car extends Canvas {

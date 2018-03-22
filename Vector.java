@@ -16,23 +16,44 @@ public class Vector {
         x = 0;
         y = 0;
     }
+
+    /**
+     * The x and y coordinates of the vector
+     * @param ax
+     * @param ay
+     */
     public Vector(double ax, double ay){
         x = ax;
         y = ay;
     }
-    
+
+    /**
+     * Get x
+     * @return x
+     */
     public double getx(){
         return x;
     }
-    
+
+    /**
+     * Get y
+     * @return y
+     */
     public double gety(){
         return y;
-    } 
+    }
+
+    /**
+     * Gives magnitude and direction to the Vector in radians
+     * @param size
+     * @param angle
+     */
     public void addPolar(double size, double angle){
         y += Math.sin(Math.toRadians(angle))*size;
         x += Math.cos(Math.toRadians(angle))*size;
         }
-    
+
+
     public void addCartesian(double ax, double ay){
         x += ax;
         y += ay;
@@ -42,11 +63,19 @@ public class Vector {
         x += v.getx();
         y += v.gety();
     }
-    
+
+    /**
+     * Gets the angle of the vector
+     * @return angle in degrees
+     */
     public double getAngle(){
         return Math.toDegrees(Math.atan2(y, x));
     }
-     
+
+    /**
+     * Gets the size of the vector
+     * @return size of vector
+     */
     public double getSize(){
         return Math.sqrt(x*x+y*y);
     }
