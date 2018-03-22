@@ -1,21 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 import javafx.scene.shape.Circle;
 
 /**
  * Checkpoint is a drawn object in a location where the Car object passes through
- * @author peter
+ * @author Peter, Gena, Andrew
  */
 public class Checkpoint extends Circle {
 	private double x;
 	private double y;
 	private int id;
 
-	
     public final double radius = 1.0;
     
     public Checkpoint()
@@ -34,9 +27,7 @@ public class Checkpoint extends Circle {
         this.setRadius(radius);
         this.setX(xPos);
         this.setY(yPos);
-        
     }
-
 
 	/**
 	 * Retrieves the Checkpoint object's x value

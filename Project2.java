@@ -1,11 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-import java.util.Random;
-
+//##### IMPORTS ######
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -18,17 +11,20 @@ import javafx.stage.Stage;
 
 /**
  * Creates the Track object and adds it to the Stage
- * @author g_zuliy
+ * @author Gena, Andrew, Peter
  */
 public class Project2 extends Application {
 
 	private Track track;
-
+	private VBox root;
+	private HBox bottom;
+	
+	
 	@Override
 	public void start(Stage primaryStage) {
 
-		VBox root = new VBox();
-		HBox bottom = new HBox();
+		root = new VBox();
+		bottom = new HBox();
 		bottom.setSpacing(360);
 		root.setPadding(new Insets(50.0));
 		track = new Track();
@@ -43,25 +39,22 @@ public class Project2 extends Application {
             	track.startRace();
             }
         });
+        
         reset.setOnAction(new EventHandler<ActionEvent>() {
             
             @Override
             public void handle(ActionEvent event) {
-            	track.stopRace();
-            	track.removeCars();
-            	track = new Track();
-            	root.getChildren().remove(0);
-            	System.out.println("NEW");
-            	root.getChildren().add(0,track);
+            	reset();
             }
         });
+        
         bottom.getChildren().add(start);
         bottom.getChildren().add(reset);
         root.getChildren().add(bottom);
 
 		Scene scene = new Scene(root, 700, 600);
 
-		primaryStage.setTitle("Race Game");
+		primaryStage.setTitle("Racing Game Prototype v1.0");
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
@@ -77,7 +70,11 @@ public class Project2 extends Application {
 	
 	public void reset()
 	{
-		
+		track.stopRace();
+    	//track.removeCars();
+    	track = new Track();
+    	root.getChildren().remove(0);
+    	root.getChildren().add(0,track);
 	}
 
 	public void init() {
