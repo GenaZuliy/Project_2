@@ -13,6 +13,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 /**
@@ -21,25 +22,42 @@ import javafx.stage.Stage;
  */
 public class Project2 extends Application {
 
-	private Track track = new Track();
+	private Track track;
 
 	@Override
 	public void start(Stage primaryStage) {
 
 		VBox root = new VBox();
+		HBox bottom = new HBox();
+		bottom.setSpacing(360);
 		root.setPadding(new Insets(50.0));
-
+		track = new Track();
 		root.getChildren().add(0,track);
-		Button btn = new Button();
-        btn.setText("Click to change direction");
-        btn.setOnAction(new EventHandler<ActionEvent>() {
+		Button start = new Button("  START   RACE   ");
+		Button reset = new Button("  RESET   RACE   ");
+ 
+        start.setOnAction(new EventHandler<ActionEvent>() {
             
             @Override
             public void handle(ActionEvent event) {
-       
+            	track.startRace();
             }
         });
-        root.getChildren().add(btn);
+        reset.setOnAction(new EventHandler<ActionEvent>() {
+            
+            @Override
+            public void handle(ActionEvent event) {
+            	track.stopRace();
+            	track.removeCars();
+            	track = new Track();
+            	root.getChildren().remove(0);
+            	System.out.println("NEW");
+            	root.getChildren().add(0,track);
+            }
+        });
+        bottom.getChildren().add(start);
+        bottom.getChildren().add(reset);
+        root.getChildren().add(bottom);
 
 		Scene scene = new Scene(root, 700, 600);
 
@@ -55,6 +73,11 @@ public class Project2 extends Application {
 	public static void main(String[] args) {
 		launch(args);
 
+	}
+	
+	public void reset()
+	{
+		
 	}
 
 	public void init() {

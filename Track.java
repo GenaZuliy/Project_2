@@ -1,6 +1,6 @@
 import java.util.LinkedList;
 import java.util.Random;
-
+import javafx.scene.control.Alert;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -27,7 +27,7 @@ public class Track extends Pane{
     //cars.setNumberOfCars(1);
     //checkpoints.setAmount(2);
 	  
-	  this("Unnamed", 4, 4);
+	  this("Unnamed", 6, 5);
   }
 
 
@@ -47,9 +47,8 @@ public class Track extends Pane{
     // old : checkpoints.setAmount(numberOfCheckpoints);
     this.numCheckpt = numCheckpt;
     checkpoints = new Checkpoint[numCheckpt];
-    initCheckpts();
-    initCars();
-
+    this.initCheckpts();
+    this.initCars();
     //timer refreshes the track ever 1/60th of a second and updates the locations of the cars
     timer.setCycleCount(Timeline.INDEFINITE);
 		timer.getKeyFrames().add(new KeyFrame(Duration.seconds(1/60.0), e -> {
@@ -58,7 +57,7 @@ public class Track extends Pane{
 
 		}));
 		timer.setAutoReverse(false);
-		timer.play();
+		//timer.play();
 		
 		
         
@@ -102,7 +101,7 @@ public class Track extends Pane{
 	  for(int i = 0; i < numCars; i++)
 	  {
 		  
-		  Car c = new Car(50,50,asList(checkpoints));
+		  Car c = new Car(asList(checkpoints), i + 1);
 		  c.startTimer();
 		  //double angle = angleBetweenCheckpt(checkpoints[c.getLastCheckpt()],checkpoints[getNextCheckpt(c)]);
 		  //c.setRotate(angle);
@@ -135,19 +134,20 @@ public class Track extends Pane{
 		  Checkpoint c = new Checkpoint(0,0,25);
 		  Random rand = new Random();
 		  if(i == 0)
-			  c = new Checkpoint(rand.nextDouble() * 300,i * 100 + rand.nextDouble() * 100, 30);
+			  c = new Checkpoint(rand.nextDouble() * 300,i * 100 + rand.nextDouble() * 100, 25);
 		  else if(i == 1)
-			  c = new Checkpoint(rand.nextDouble() * 300 + 300,i * 100 + rand.nextDouble() * 100, 30);
+			  c = new Checkpoint(rand.nextDouble() * 300 + 300,i * 100 + rand.nextDouble() * 100, 25);
 		  else if(i == 2)
-			  c = new Checkpoint(rand.nextDouble() * 300 + 300 ,i * 100 + rand.nextDouble() * 100 + 100, 30);
+			  c = new Checkpoint(rand.nextDouble() * 300 + 300 ,i * 100 + rand.nextDouble() * 100 + 100, 25);
 		  else
-			  c = new Checkpoint(rand.nextDouble() * 300 ,i * 100 + rand.nextDouble() * 100 + 70, 30);
+			  c = new Checkpoint(rand.nextDouble() * 300 ,i * 100 + rand.nextDouble() * 100, 25);
 		  c.setTranslateX(c.getX());
 		  c.setTranslateY(c.getY());
 		  checkpoints[i] = c;
 		  this.getChildren().add(c);
 	  }
   }
+
 
     /**
      * Moves each car to it's next checkpoint
@@ -186,10 +186,26 @@ public class Track extends Pane{
 	  {
 		  timer.stop();
 		  System.out.println("GAME OVER!");
+		  Alert alert = new Alert(Alert.AlertType.INFORMATION);
+		  String s = "";
+		  Car fastest = cars[0];
 		  for(Car c : cars)
-		  {
-			  System.out.println(c.getTotalTime());  
+		  {	
+			  if(c.getTotalTime() < fastest.getTotalTime())
+			  {
+				  fastest = c;
+			  }
+			  c.stopTimer();
+			  s += c.toString() + '\n';
+			  
 		  }
+		  alert.setHeaderText("CAR " + fastest.getID() + " WINS WITH A TIME OF " + String.valueOf(fastest.getTotalTime()).substring(0, 5) + "  Seconds");
+		  alert.setTitle("GAME OVER");
+		  alert.setWidth(400);
+		  alert.setWidth(600);
+		  alert.setContentText(s);
+		  alert.show();
+		  
 	}
 	 
 	  return done;
@@ -201,7 +217,12 @@ public class Track extends Pane{
      */
    public void startRace()
    {
-      //start timer
+      timer.playFromStart();
+   }
+   
+   public void stopRace()
+   {
+	   timer.stop();
    }
 
     /**
@@ -218,6 +239,12 @@ public class Track extends Pane{
 		   LL.add(c);
 	   }
 	   return LL;
+   }
+   
+   public void removeCars()
+   {
+	   for(Car c : cars)
+		   c = null;
    }
   
 }

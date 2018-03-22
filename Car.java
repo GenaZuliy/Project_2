@@ -14,6 +14,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.util.Duration;
 
 /**
@@ -36,6 +37,9 @@ public class Car extends Canvas {
 	private boolean finished;
 	private double totalTime;
 	private Timeline timer = new Timeline();
+	private Color myFill;
+	private int ID;
+	
 
 	
 
@@ -68,12 +72,17 @@ public class Car extends Canvas {
 	 *            the checkpoint
 	 */
 
-	public Car(double x, double y, LinkedList<Checkpoint> LL) {
+	public Car(LinkedList<Checkpoint> LL, int ID) {
 		super(50, 20);
 		this.setManaged(false);
-		gc.setFill(Color.RED);
+		Random rand = new Random();
+		this.myFill = Color.rgb(rand.nextInt(256),rand.nextInt(256),rand.nextInt(256));
+		gc.setFill(myFill);
+		gc.setFont(new Font("Georgia", 20));
 		gc.fillRect(0, 0, 50, 20);
-
+		gc.setFill(Color.BLACK);
+		gc.fillText(String.valueOf(ID), 19, 15);
+		this.ID = ID;
 		this.checkpoints = (LinkedList<Checkpoint>) LL.clone();
 		this.randomizeStart();
 		this.engineForce = Math.random() * 3000 + 2000;
@@ -81,11 +90,13 @@ public class Car extends Canvas {
 		this.mass = 1000;
 		this.acceleration = new Vector((engineForce - (frictionConstant * 9.8 * mass)) / mass, driveAngle);
 		this.velocity = new Vector();
-		this.position = new Vector(checkpoints.getLast().getTranslateX(), checkpoints.getLast().getTranslateY());
+		
 		this.driveAngle = 0;
 		this.finished = false;
+		this.position = new Vector(checkpoints.getLast().getTranslateX(), checkpoints.getLast().getTranslateY());
 		position.addCartesian(velocity);
-		
+		this.move();
+		this.velocity = new Vector();
 	    timer.setCycleCount(Timeline.INDEFINITE);
 			timer.getKeyFrames().add(new KeyFrame(Duration.seconds(1/10.0), e -> {
 				
@@ -93,14 +104,11 @@ public class Car extends Canvas {
 
 			}));
 			timer.setAutoReverse(false);	        
-	      
-	 	
-
 	}
 
 	public void checkCollision() {
 		Checkpoint nextpt = checkpoints.getFirst();
-		if (nextpt.getBoundsInParent().intersects(this.getBoundsInParent()) && checkpointDistance() < 10) {
+		if (nextpt.getBoundsInParent().intersects(this.getBoundsInParent()) && Math.abs(checkpointDistance()) <= 7 ) {
 			acceleration.multiplyScaler(0);
 			velocity.multiplyScaler(0);
 			position.multiplyScaler(0);
@@ -131,10 +139,12 @@ public class Car extends Canvas {
 		if (!checkpoints.isEmpty() && !this.isFinished()) {
 			checkCollision();
 			// checkpointDistance();
-			turn();
-			move();
-		}
 
+				turn();
+	
+
+				move();
+		}
 	}
 
 	/**
@@ -168,10 +178,11 @@ public class Car extends Canvas {
 	 * Rotates the car by a certain degree to face the next checkpoint
 	 */
 	public void turn() {
-
+		
 		if (!checkpoints.isEmpty()) {
 			driveAngle = angleToCheckpt(checkpoints.getFirst());
 			this.setRotate(driveAngle);
+			
 			// acceleration.multiplyScaler(0);
 		}
 
@@ -288,6 +299,16 @@ public class Car extends Canvas {
 	public void setTotalTime(double totalTime) {
 		this.totalTime = totalTime;
 	}
+	
+	public Color getColor()
+	{
+		return this.myFill;
+	}
+	public int getID()
+	{
+		return ID;
+	}
+	
 
 	@Override
 	/**
@@ -295,7 +316,6 @@ public class Car extends Canvas {
 	 * acceleration
 	 */
 	public String toString() {
-		return "x : " + position.getx() + " y : " + position.gety() + " v Angle : " + driveAngle + "  " + "  DIST:  "
-				+ checkpointDistance();
+		return "Car " + ID + "   " + String.valueOf(totalTime).substring(0, 5) + " Seconds";
 	}
 }
