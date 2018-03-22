@@ -8,10 +8,13 @@
 import java.util.LinkedList;
 import java.util.Random;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
 
 /**
  * Creates a Car object with a velocity, position, accerlation, engine, tires, identification, friction constant,
@@ -30,6 +33,11 @@ public class Car extends Canvas {
 	private LinkedList<Checkpoint> checkpoints;
 	private GraphicsContext gc = this.getGraphicsContext2D();
 	private double driveAngle;
+	private boolean finished;
+	private double totalTime;
+	private Timeline timer = new Timeline();
+
+	
 
 	/**
 	 * Initialize the car object with the given specifications
@@ -45,6 +53,7 @@ public class Car extends Canvas {
 		this.mass = 1000;
 		this.velocity = new Vector();
 		this.driveAngle = 0;
+		this.finished = false;
 	}
 
 	/**
@@ -74,7 +83,18 @@ public class Car extends Canvas {
 		this.velocity = new Vector();
 		this.position = new Vector(checkpoints.getLast().getTranslateX(), checkpoints.getLast().getTranslateY());
 		this.driveAngle = 0;
+		this.finished = false;
 		position.addCartesian(velocity);
+		
+	    timer.setCycleCount(Timeline.INDEFINITE);
+			timer.getKeyFrames().add(new KeyFrame(Duration.seconds(1/10.0), e -> {
+				
+				this.totalTime += .1;
+
+			}));
+			timer.setAutoReverse(false);	        
+	      
+	 	
 
 	}
 
@@ -86,6 +106,10 @@ public class Car extends Canvas {
 			position.multiplyScaler(0);
 			position.addCartesian(nextpt.getTranslateX(), nextpt.getTranslateY());
 			checkpoints.removeFirst();
+		}
+		if(checkpoints.isEmpty())
+		{
+			this.finished = true;
 		}
 	}
 
@@ -104,7 +128,7 @@ public class Car extends Canvas {
 	 * direction
 	 */
 	public void drive() {
-		if (!checkpoints.isEmpty()) {
+		if (!checkpoints.isEmpty() && !this.isFinished()) {
 			checkCollision();
 			// checkpointDistance();
 			turn();
@@ -239,6 +263,30 @@ public class Car extends Canvas {
 			Checkpoint c = checkpoints.removeFirst();
 			checkpoints.addLast(c);
 		}
+	}
+	
+	public boolean isFinished()
+	{
+		return finished;
+	}
+	
+	public double getTotalTime() {
+		return totalTime;
+	}
+	
+	public void startTimer()
+	{
+		timer.play();
+	}
+	
+	public void stopTimer()
+	{
+		timer.stop();
+	}
+	
+
+	public void setTotalTime(double totalTime) {
+		this.totalTime = totalTime;
 	}
 
 	@Override

@@ -103,6 +103,7 @@ public class Track extends Pane{
 	  {
 		  
 		  Car c = new Car(50,50,asList(checkpoints));
+		  c.startTimer();
 		  //double angle = angleBetweenCheckpt(checkpoints[c.getLastCheckpt()],checkpoints[getNextCheckpt(c)]);
 		  //c.setRotate(angle);
 		  c.turn();
@@ -110,6 +111,7 @@ public class Track extends Pane{
 		  cars[i] = c;
 		  
 		  this.getChildren().add(c);
+		  
 	  }
   }
   
@@ -152,13 +154,45 @@ public class Track extends Pane{
      */
   public void moveCars()
   {
-	  
+	  if(!checkDone())
+	  {
+		  for(Car c : cars)
+		  {
+			  if(!c.isFinished())
+			  {
+				  c.drive();
+			  }
+			  else
+			  {
+				  c.stopTimer();
+			  }
+		  }  
+	  }
+
+  }
+  
+  public boolean checkDone()
+  {
+	  boolean done = true;
 	  for(Car c : cars)
 	  {
-		  c.drive();
-		  //c.drive(distBetweenCheckpt(checkpoints[c.getLastCheckpt()],checkpoints[getNextCheckpt(c)]));
+		  if(!c.isFinished())
+		  {
+			  done = false;
+		  }
 		  
 	  }
+	  if(done == true)
+	  {
+		  timer.stop();
+		  System.out.println("GAME OVER!");
+		  for(Car c : cars)
+		  {
+			  System.out.println(c.getTotalTime());  
+		  }
+	}
+	 
+	  return done;
   }
 
 
