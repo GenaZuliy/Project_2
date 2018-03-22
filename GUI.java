@@ -13,7 +13,7 @@ import javafx.stage.Stage;
  * Creates the Track object and adds it to the Stage
  * @author Gena, Andrew, Peter
  */
-public class Project2 extends Application {
+public class GUI extends Application {
 
 	private Track track;
 	private VBox root;
