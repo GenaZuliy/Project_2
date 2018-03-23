@@ -7,28 +7,29 @@ import javafx.scene.shape.Circle;
 public class Checkpoint extends Circle {
 	private double x;
 	private double y;
-	private int id;
 
     public final double radius = 1.0;
-    
+
+	// ##### CONSTRUCTOR #####
     public Checkpoint()
-    {	
+    {
     	this(50,50,30);
     }
 
 	/**
 	 * Checkpoint is created with an x/y position and a radius
-	 * @param xPos
-	 * @param yPos
-	 * @param radius
+	 * @param xPos the x position
+	 * @param yPos the y position
+	 * @param radius the radius
 	 */
 	public Checkpoint(double xPos,double yPos,int radius)
-    {	
+    {
         this.setRadius(radius);
         this.setX(xPos);
         this.setY(yPos);
     }
 
+	// ##### METHODS #####
 	/**
 	 * Retrieves the Checkpoint object's x value
 	 * @return x
@@ -60,15 +61,6 @@ public class Checkpoint extends Circle {
    	public void setY(double y) {
    		this.y = y;
    		this.setTranslateY(y);
-   	}
-
-	/**
-	 * Get's the name of the Checkpoint
-	 * @return id
-	 */
-	public int getID()
-   	{
-   		return id;
    	}
 
 }

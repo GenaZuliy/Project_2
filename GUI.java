@@ -15,6 +15,7 @@ import javafx.stage.Stage;
  */
 public class GUI extends Application {
 
+	// ###### INSTANCE VARIABLES ######
 	private Track track;
 	private VBox root;
 	private HBox bottom;
@@ -32,21 +33,9 @@ public class GUI extends Application {
 		Button start = new Button("  START   RACE   ");
 		Button reset = new Button("  RESET   RACE   ");
  
-        start.setOnAction(new EventHandler<ActionEvent>() {
-            
-            @Override
-            public void handle(ActionEvent event) {
-            	track.startRace();
-            }
-        });
+        start.setOnAction(event -> track.startRace());
         
-        reset.setOnAction(new EventHandler<ActionEvent>() {
-            
-            @Override
-            public void handle(ActionEvent event) {
-            	reset();
-            }
-        });
+        reset.setOnAction(event -> reset());
         
         bottom.getChildren().add(start);
         bottom.getChildren().add(reset);
@@ -64,7 +53,6 @@ public class GUI extends Application {
 	public void reset()
 	{
 		track.stopRace();
-    	//track.removeCars();
     	track = new Track();
     	root.getChildren().remove(0);
     	root.getChildren().add(0,track);

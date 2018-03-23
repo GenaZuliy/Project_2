@@ -4,10 +4,15 @@
  * @author Peter, Gena, Andrew
  */
 public class Vector {
-    
+
+    // ###### INSTANCE VARIABLES ######
     private double x;
     private double y;
-    
+
+    // ##### CONSTRUCTORS #####
+    /**
+     * Create an empty Vector
+     */
     public Vector(){
         x = 0;
         y = 0;
@@ -60,24 +65,8 @@ public class Vector {
         y += v.gety();
     }
 
-    /**
-     * Gets the angle of the vector
-     * @return angle in degrees
-     */
-    public double getAngle(){
-        return Math.toDegrees(Math.atan2(y, x));
-    }
-
-    /**
-     * Gets the size of the vector
-     * @return size of vector
-     */
-    public double getSize(){
-        return Math.sqrt(x*x+y*y);
-    }
-    
-    public void multiplyScaler(double scaler){
-        x *= scaler;
-        y *= scaler;
+    public void multiplyScalar(double scalar){
+        x *= scalar;
+        y *= scalar;
     }
 }

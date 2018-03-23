@@ -38,9 +38,9 @@ public class Track extends Pane {
 	 * Creates a Track object with specified name, amount of cars and checkpoints to
 	 * spawn
 	 * 
-	 * @param trackName
-	 * @param numCars
-	 * @param numCheckpt
+	 * @param trackName name of track
+	 * @param numCars number of cars
+	 * @param numCheckpt number of checkpoints
 	 */
 	public Track(String trackName, int numCars, int numCheckpt) {
 
@@ -64,19 +64,13 @@ public class Track extends Pane {
 
 	}
 
+	/**
+	 * Initialize the track with the given variables
+	 */
 	public Track() {
 
 		this("Unnamed", 6, 5);
 
-	}
-
-	/**
-	 * Returns the name of the track
-	 * 
-	 * @return name
-	 */
-	public String getName() {
-		return name;
 	}
 
 	/**
@@ -98,7 +92,7 @@ public class Track extends Pane {
 	 */
 	public void initCheckpts() {
 		for (int i = 0; i < numCheckpt; i++) {
-			Checkpoint c = new Checkpoint(0, 0, 25);
+			Checkpoint c;
 			Random rand = new Random();
 			if (i == 0)
 				c = new Checkpoint(rand.nextDouble() * 300, i * 100 + rand.nextDouble() * 100, 25);
@@ -129,9 +123,9 @@ public class Track extends Pane {
 		}
 	}
 	
-	/*
+	/**
 	 * checks if all cars have finished
-	 * returns true if all cars are done
+	 * @return done True if all cars are done
 	 */
 	public boolean checkDone() {
 		boolean done = true;
@@ -141,7 +135,7 @@ public class Track extends Pane {
 			}
 
 		}
-		if (done == true) {
+		if (done) {
 			timer.stop();
 			Alert alert = new Alert(Alert.AlertType.INFORMATION);
 			String s = "";
@@ -182,7 +176,9 @@ public class Track extends Pane {
 	}
 
 	/**
-	 * returns array of checkpoints as linkedlist
+	 * returns array of checkpoints as Linkedlist
+	 * @param array Array of checkpoints
+	 * @return LL the LinkedList of Checkpoints
 	 */
 	public LinkedList<Checkpoint> asList(Checkpoint[] array) {
 

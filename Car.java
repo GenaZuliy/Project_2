@@ -22,6 +22,7 @@ import javafx.util.Duration;
  */
 public class Car extends Canvas {
 
+    // ###### INSTANCE VARIABLES ######
 	private Vector velocity;
 	private Vector position;
 	private Vector acceleration;
@@ -34,10 +35,9 @@ public class Car extends Canvas {
 	private boolean finished;
 	private double totalTime;
 	private Timeline timer = new Timeline();
-	private Color myFill;
 	private int ID;
 
-	// ##### CONSTRUCTOR #####
+	// ##### CONSTRUCTORS #####
 	/**
 	 * Initialize the car object with random engine force (2000N - 5000N) Position
 	 * based on velocity based on acceleration Default Values: Mass: 1000kg;
@@ -51,7 +51,7 @@ public class Car extends Canvas {
 		super(50, 20);
 		this.setManaged(false);
 		Random rand = new Random();
-		this.myFill = Color.rgb(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
+		Color myFill = Color.rgb(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
 		gc.setFill(myFill);
 		gc.setFont(new Font("Georgia", 20));
 		gc.fillRect(0, 0, 50, 20);
@@ -102,9 +102,9 @@ public class Car extends Canvas {
 	public void checkCollision() {
 		Checkpoint nextpt = checkpoints.getFirst();
 		if (nextpt.getBoundsInParent().intersects(this.getBoundsInParent()) && Math.abs(checkpointDistance()) <= 7) {
-			acceleration.multiplyScaler(0);
-			velocity.multiplyScaler(0);
-			position.multiplyScaler(0);
+			acceleration.multiplyScalar(0);
+			velocity.multiplyScalar(0);
+			position.multiplyScalar(0);
 			position.addCartesian(nextpt.getTranslateX(), nextpt.getTranslateY());
 			checkpoints.removeFirst();
 		}
@@ -112,15 +112,7 @@ public class Car extends Canvas {
 			this.finished = true;
 		}
 	}
-	
 
-	/**
-	 * Returns the size of the velocity vector
-	 */
-	public double getSpeed() {
-		return velocity.getSize();
-	}
-	
 	/**
 	 * If the car hasn't visited all checkpoints and there are checkpoints to visit,
 	 * check for collision, turn if needed, and move to new position
@@ -153,13 +145,6 @@ public class Car extends Canvas {
 	}
 
 	/**
-	 * sets the car's list of checkpoints to a copy of the track's list of checkpoints
-	 */
-	public void setCheckpoints(LinkedList<Checkpoint> LL) {
-		this.checkpoints = (LinkedList<Checkpoint>) LL.clone();
-	}
-
-	/**
 	 * Rotates the car by a certain degree to face the next checkpoint
 	 */
 	public void turn() {
@@ -180,7 +165,8 @@ public class Car extends Canvas {
 	}
 
 	/**
-	 * returns the angle from current position to next checkpoint in list
+	 * returns the angle from current position to next checkpoint in  the list
+	 * @param b the next checkpoint
 	 */
 	public double angleToCheckpt(Checkpoint b) {
 		double xa = position.getx();
@@ -197,7 +183,7 @@ public class Car extends Canvas {
 	 */
 	public void calcAcc() {
 		acceleration.addPolar(((engineForce - (frictionConstant * mass * 9.8)) / mass), driveAngle);
-		acceleration.multiplyScaler(1 / 100.0);
+		acceleration.multiplyScalar(1 / 100.0);
 	}
 
 	/**
@@ -216,30 +202,6 @@ public class Car extends Canvas {
 		position.addCartesian(velocity);
 		this.setTranslateX(position.getx() - this.getWidth()/2);
 		this.setTranslateY(position.gety() - this.getHeight()/2);
-	}
-
-	/**
-	 * Returns cars x position
-	 * @return xPos
-	 */
-	public double getxPos() {
-		return position.getx();
-	}
-
-	/**
-	 * Returns cars y position
-	 * @return yPos
-	 */
-	public double getyPos() {
-		return position.gety();
-	}
-
-	/**
-	 * Returns angle of car's velocity
-	 * @return velocity.getAngle()
-	 */
-	public double getAngle() {
-		return velocity.getAngle();
 	}
 
 	/**
@@ -279,13 +241,6 @@ public class Car extends Canvas {
 	 */
 	public void stopTimer() {
 		timer.stop();
-	}
-
-	/**
-	 * Returns the Color of the car
-	 */
-	public Color getColor() {
-		return this.myFill;
 	}
 
 	/**
