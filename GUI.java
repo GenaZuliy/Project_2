@@ -30,8 +30,8 @@ public class GUI extends Application {
 		root.setPadding(new Insets(50.0));
 		track = new Track();
 		root.getChildren().add(0,track);
-		Button start = new Button("  START   RACE   ");
-		Button reset = new Button("  RESET   RACE   ");
+		Button start = new Button("START RACE");
+		Button reset = new Button("RESET RACE");
  
         start.setOnAction(event -> track.startRace());
         
@@ -61,5 +61,9 @@ public class GUI extends Application {
 	public void init() {
 
 	}
+        
+        public static void main(String args[]){
+            launch(args);
+        }
 
 }
